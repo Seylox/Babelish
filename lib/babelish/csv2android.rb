@@ -76,8 +76,7 @@ module Babelish
     # Remove special characters to make the Key compatible with Android
     ##################################################
     def sanitize_key(unsanitized_key)
-      #puts "sanitize_key: #{unsanitized_key}"
-      
+
       key = unsanitized_key.downcase
       key = key.gsub ' ', '_'
       key = key.gsub ' ', '_' # non-breaking space, this is not an error!
@@ -132,7 +131,6 @@ module Babelish
       # Remove Emojis from Key
       key = strip_emoji(key)
 
-      #puts "sanitized_key: #{key}"
       return key
     end
 
@@ -140,7 +138,6 @@ module Babelish
     # Replace characters with Android compatible ones (e.g. "&" -> "&amp;")
     ##################################################
     def sanitize_value(unsanitized_value)
-      #puts "unsanitized_value: #{unsanitized_value}"
       value = unsanitized_value
       value = value.gsub "'", %q(\\\') # replaces ['] with [\']
       #value = value.gsub '"', '\\"' # replaces ["] with [\"] TODO is this correct?
@@ -163,26 +160,26 @@ module Babelish
       value = value.gsub '**', '\"'
       value = value.gsub '”', '\"' # weird
 
-      if unsanitized_value != value
-        #puts "changed: #{unsanitized_value} \n-> #{value}"
-      end
-      #puts "value: #{value}"
       return value
     end
 
     ##################################################
-    # 
+    # Create Android compatible row
     ##################################################
     def get_row_format(row_key, row_value, comment = nil, indentation = 0)
-      #puts "#{row_key}; #{row_value}; #{comment}; #{indentation}"
       sanitized_row_key = sanitize_key(row_key)
       sanitized_row_value = sanitize_value(row_value)
-      #puts "sanitized_row_key: #{sanitized_row_key}"
-      #puts "sanitized_row_value: #{sanitized_row_value}"
 
-
-      entry = comment.to_s.empty? ? "" : "\n\t<!-- #{comment} -->\n"
-      entry + "    <string name=\"#{sanitized_row_key}\">#{sanitized_row_value}</string>\n"
+      entry = comment.to_s.empty? ? "" : "\n    <!-- #{comment} -->\n"
+      if comment.to_s.include? "DONOTTRANSLATE"
+        # Remove translations that include the comment DONOTTRANSLATE
+        entry = ""
+      elsif sanitized_row_value.to_s.empty?
+        # Remove strings that are actually empty
+        entry = ""
+      else
+        entry + "    <string name=\"#{sanitized_row_key}\">#{sanitized_row_value}</string>\n"
+      end
     end
 
     def hash_to_output(content = {})
