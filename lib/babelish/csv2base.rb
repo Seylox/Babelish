@@ -7,12 +7,13 @@ module Babelish
     attr_accessor :csv_filename
     attr_accessor :default_lang
     attr_accessor :csv_separator
-    attr_accessor :excluded_states, :state_column, :keys_column, :comments_column
+    attr_accessor :excluded_states, :included_states, :state_column, :keys_column, :comments_column
     attr_accessor :languages
 
     def initialize(filename, langs, args = {})
       default_args = {
         :excluded_states => [],
+        :included_states => [],
         :state_column => nil,
         :keys_column => 0,
         :csv_separator => ","
@@ -32,6 +33,7 @@ module Babelish
       @output_dir = args[:output_dir].to_s
       @csv_filename = filename
       @excluded_states = args[:excluded_states]
+      @included_states = args[:included_states]
       @state_column = args[:state_column]
       @keys_column = args[:keys_column]
       @comments_column = args[:comments_column]
@@ -129,7 +131,7 @@ module Babelish
               language.add_language_id(@langs[row[i]].to_s)
             end
             @languages[i] = language
-          elsif !@state_column || (row[@state_column].nil? || row[@state_column] == '' || !@excluded_states.include?(row[@state_column]))
+          elsif (!@state_column || (row[@state_column].nil? || row[@state_column] == '' || !@excluded_states.include?(row[@state_column])) && ((!@included_states.empty? && @included_states.include?(row[@state_column])) || @included_states.empty?))
             key = row[@keys_column]
             comment = @comments_column ? row[@comments_column] : nil
             key.strip! if @stripping

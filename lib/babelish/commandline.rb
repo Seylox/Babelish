@@ -20,6 +20,7 @@ class Commandline < Thor
 
     # optional options
     method_option :excluded_states, :type => :array, :aliases => "-x", :desc => "Exclude rows with given state"
+    method_option :included_states, :type => :array, :aliases => "-y", :desc => "Include rows with given state"
     method_option :state_column, :type => :numeric, :aliases => "-s", :desc => "Position of column for state if any"
     method_option :keys_column, :type => :numeric, :aliases => "-k", :desc => "Position of column for keys"
     method_option :comments_column, :type => :numeric, :aliases => "-C", :desc => "Position of column for comments if any"
