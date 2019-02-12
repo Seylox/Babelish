@@ -156,7 +156,7 @@ module Babelish
       value = value.gsub '', '' # 0x13 Unicode control character
       value = value.gsub ' ', ' ' # replace non-breaking space with normal space
       value = value.gsub '...', '…' # replace 3 dots with suggested char
-      value = value.gsub(/\%\%/, '%') # replace %% with %
+      value = value.gsub(/\%\%/, '\%%') # replace %% with \%%
       value = value.gsub '**', '\"'
       value = value.gsub '”', '\"' # weird
 
