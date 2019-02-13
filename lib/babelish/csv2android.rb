@@ -156,9 +156,23 @@ module Babelish
       value = value.gsub '', '' # 0x13 Unicode control character
       value = value.gsub ' ', ' ' # replace non-breaking space with normal space
       value = value.gsub '...', '…' # replace 3 dots with suggested char
-      value = value.gsub(/\%\%/, '%') # replace %% with %
       value = value.gsub '**', '\"'
       value = value.gsub '”', '\"' # weird
+
+      # Explanation for the following: Strings, that contain "%%" (percent sign)
+      # need to be prepared for Android depending if they're in a string that
+      # contains a Placeholder (e.g. "%1$s") or not. The reason is that the
+      # Java String Formatter only looks for "%" when formatting the strings.
+      # Therefor strings containing the placeholder must use "\%%" for percent
+      # (otherwise it leads to crashes), whereas strings without a placeholder
+      # have to use "%" (otherwise it leads to "%%" in the app).
+      # if string contains regex pattern: "(%[0-9]\$[s])" &&
+      # contains "%%" then replace with "\%%", else "%"
+      if value =~ /(%[0-9]\$[s,d])/
+      value = value.gsub(/\%\%/, '\%%') # replace %% with \%%
+      else
+        value = value.gsub(/\%\%/, '%') # replace %% with %
+      end
 
       return value
     end
