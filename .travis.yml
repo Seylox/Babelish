@@ -1,10 +1,17 @@
 language: ruby
 sudo: false
 rvm:
-  - 2.1.0
-  - 2.2
-  - 2.3.1
+- 2.1.0
+- 2.2
+- 2.3.1
+- 2.7.0
+script:
+  - bundle exec rake generate_keys
+  - bundle exec rake test
+before_deploy:
+  - bundle exec rake generate_keys
 deploy:
+  skip_cleanup: true
   provider: rubygems
   api_key:
     secure: Xjq+v+jEU6wK4BtyfnV1elegNcxK6Ah/O99Sn9c2IlkCmJ1wxLBouqzEiSorSJ4IOMa5H2y3gwo5GXOr6Y7d8huyGrPuBeCSGqAmH77wNCIv7G+jnLiYb1sRZbtKcPW2QaN6JF81qDIelwyspMfo6/ug1qN1x323UaxZl7f7nUE=
@@ -13,3 +20,8 @@ deploy:
     tags: true
     repo: netbe/Babelish
     all_branches: true
+    ruby: 2.7.0
+env:
+  global:
+  - secure: btKN46sftTFZ9RmmCvVveHt6JGRBt+ausRoWoy/n5iwgdjrHGOPnyLwMkRoZkAvWt6F2AlhzoNiNfcLhrlhtySJgZS2fw/yvkCdCu92vBxuOhhzp0vq5LuNTWL9feTRjDx1kfVLPBDJUS2Ejn7zi8x7BUKnfSJN2lZ3FkkHkUxQ=
+  - secure: qBnld5DOrn+coyVc7ls271REiIN9KY4+dyrZh451mfVbcGX/n2yyu6HG0PaTU8XwS2S6jBDWzaX0Oq1V+1BsKdjZb8OTtbKG0bQ8/F+V8nNG6w1gbNIFRHxTgFK69ASEpwHPmqPt50h6duNeLcc1h+wu43lGaMn8CMN0HqaW5D4=

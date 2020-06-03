@@ -17,7 +17,7 @@ module Babelish
       if language.code == "default"
         filepath = Pathname.new(@file_path) + "values" + output_name
       else
-        region = language.region.to_s.empty? ? "" : "-#{language.region}"
+        region = language.region.to_s.empty? ? "" : "-r#{language.region}"
         filepath = Pathname.new(@file_path) + "values-#{language.code}#{region}" + output_name
       end
       return filepath ? [filepath] : []

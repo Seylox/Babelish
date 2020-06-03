@@ -20,13 +20,13 @@ Gem::Specification.new do |s|
 
   s.add_dependency "thor"
 
-  s.add_dependency "google_drive", "~> 2.1.7"
-  s.add_dependency "nokogiri", "~> 1.6.8"
+  s.add_dependency "google_drive", "~> 3.0.4"
+  s.add_dependency "nokogiri", "~> 1.10.9"
   # google_drive dependency to ask for mail and password
   s.add_dependency "highline"
 
   # specify version of rack so works on ruby <2.2.2
-  s.add_dependency "rack", "1.6.4"
+  s.add_dependency "rack", ">= 1.6.11"
   # json support
   s.add_dependency "json"
 
@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "simplecov"
   s.add_development_dependency "yard"
 
-  s.files         = `git ls-files`.split("\n")
+  s.files         = Dir.glob("{bin,lib}/**/*") + %w(LICENSE.txt README.md)
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_path  = 'lib'
